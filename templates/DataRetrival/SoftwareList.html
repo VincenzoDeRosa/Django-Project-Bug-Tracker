@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+  <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Software</th>
+          <th scope="col">N. Logs</th>
+          <th scope="col">Versions</th>
+          <th scope="col">Files</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for s in software %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ s.name }}</td>
+          <td>{{ s.get_logs.count }}</td>
+          <td><button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample{{ s.id }}" aria-expanded="false" aria-controls="collapseExample">Versions</button></td>
+          <td><a href="{% url "files_list" s.id %}"><button type="button" class="btn btn-primary">Files</button></a></td>
+        </tr>
+          <tr>
+            <td colspan="10" class="collapse" id="collapseExample{{ s.id }}">
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col">Version</th>
+                      <th scope="col">N. Bugs</th>
+                      <th scope="col">N. Tracked Bugs</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for version in s.get_versions %}
+                    <tr>
+                      <td>{{ version.name }}</td>
+                      <td>{{ version.get_bugs.count }}</td>
+                      <td>{{ version.get_tracked_bugs.count }}</td>
+                      <td><a href="{% url "version_details" version.id %}"><button type="button" class="btn btn-primary">Details</button></a>
+                            <a href="{% url "version_anomalies" version.id %}"><button type="button" class="btn btn-primary">Anomalies</button></a>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal{{ version.id }}">Datasets</button></td>
+                    </tr>
+                      <div class="modal fade" id="modal{{ version.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Research Questions</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                  <a href="{% url "measures_list" version.id 1 %}"><button type="button" class="btn btn-primary">RQ 1</button></a>
+                                  <a href="{% url "measures_list" version.id 2 %}"><button type="button" class="btn btn-primary">RQ 2</button></a>
+                                  <a href="{% url "measures_list" version.id 3 %}"><button type="button" class="btn btn-primary">RQ 3</button></a>
+                                  <a href="{% url "measures_list" version.id 4 %}"><button type="button" class="btn btn-primary">RQ 4</button></a>
+                                  <a href="{% url "measures_list" version.id 5 %}"><button type="button" class="btn btn-primary">RQ 5</button></a>
+                                  <a href="{% url "measures_list" version.id 6 %}"><button type="button" class="btn btn-primary">RQ 6</button></a>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                  {% endfor %}
+                  </tbody>
+                </table>
+            </td>
+          </tr>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+  </body>
+</html>
