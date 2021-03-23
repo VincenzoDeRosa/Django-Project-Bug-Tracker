@@ -107,6 +107,8 @@ env.bak/
 venv.bak/
 .idea/
 .idea
+.migrations
+migrations/
 
 # Spyder project settings
 .spyderproject
